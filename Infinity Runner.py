@@ -3,7 +3,10 @@ from tkinter import *
 from math import *
 from time import *
 from random import *
-from winsound import *
+try:    #If winsound cannot load because that package doesn't exist, it will be mentioned in the console
+    from winsound import *
+except ImportError:
+    print("Failed to load winsound.")
 
 root = Tk()
 themeOfDay = ["skyblue", "midnight blue", "deep sky blue", "blue", "light sky blue"]
@@ -11,6 +14,8 @@ s = Canvas(root, width=1000, height=600, background=choice(themeOfDay))
 root.attributes("-topmost", 1)
 root.resizable(0, 0)
 root.title("∞ Runner")
+
+
 
 
  #Initializes all of the variables need and their values and assignments
@@ -123,7 +128,6 @@ def stop():
         clock -= time()/30000000000
         sleep(1)
         s.delete(runWasEndedBy)
-            
 
 def retry():
     global runWasEndedBy, score, clock, retryButton, gameOverText, finalTime, finalScore
@@ -171,7 +175,10 @@ def drawIntroScreen():
     
     instructionsButton.place(x=500, y=300, width=400, height=80, anchor=CENTER)
     s.delete(instructions)
-    PlaySound('InfoChase.wav', SND_ALIAS | SND_ASYNC | SND_LOOP)
+    try:
+        PlaySound('InfoChase.wav', SND_ALIAS | SND_ASYNC | SND_LOOP)
+    except NameError:
+        print("Could not play sound because winsound failed to load.")
 
     gameMode = "intro"
 
@@ -184,9 +191,11 @@ def pressPlay():
     startButton.destroy()
     instructionsButton.destroy()
     s.delete(instructions, instructions2, instructions3, instructions4, instructions5, kickRunner, jumpRunner, gameOver)
-    
-    PlaySound('BlackoutCity.wav', SND_ALIAS | SND_ASYNC | SND_LOOP)
 
+    try:
+        PlaySound('BlackoutCity.wav', SND_ALIAS | SND_ASYNC | SND_LOOP)
+    except NameError:
+        print("Could not play sound because winsound failed to load.")
     runGame()
 
 #Brings you over to the instructions screen and cleans up the intro screen
